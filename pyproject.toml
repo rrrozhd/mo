@@ -1,0 +1,39 @@
+[project]
+name = "mo"
+version = "0.1.0"
+description = "CYP inhibition benchmarks, molecular similarity audits, and a local screening workbench"
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+    "flask==3.1.3",
+    "httpx2==2.15.1",
+    "joblib==1.6.0",
+    "lightgbm==4.7.0",
+    "matplotlib==3.11.2",
+    "numpy==1.26.4",
+    "openai==3.35.1",
+    "pandas==2.3.3",
+    "pydantic==2.14.1",
+    "pytdc==1.1.15",
+    "rdkit==2023.9.6",
+    "scikit-learn==1.9.1",
+    "setuptools==80.10.2",
+    "torch==2.14.1",
+    "transformers==4.50.3",
+    "werkzeug==3.1.9",
+    "xgboost==3.2.0",
+]
+
+[dependency-groups]
+dev = ["pytest==9.1.1"]
+docs = ["reportlab==5.0.1", "pypdf==6.21.0"]
+
+[tool.uv]
+# Preserve the scientific environment recorded in requirements.lock.txt.
+constraint-dependencies = [
+    "gget==0.30.6",
+    "jiter==0.17.0",
+    "networkx==3.6.1",
+    "scverse-misc==0.0.3",
+    "session-info2==0.4.1",
+]

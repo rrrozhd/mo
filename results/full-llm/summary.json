@@ -1,0 +1,95 @@
+{
+  "cohort_size": 3274,
+  "bootstrap": {
+    "replicates": 2000,
+    "seed": 42,
+    "unit": "scaffold",
+    "confidence": 0.95
+  },
+  "coverage": [
+    {
+      "population": "full_selected",
+      "arm": "classifier",
+      "planned": 3274,
+      "attempted": 3274,
+      "succeeded": 3274,
+      "error": 0,
+      "unavailable": 0,
+      "missing": 0
+    },
+    {
+      "population": "full_selected",
+      "arm": "smiles",
+      "planned": 3274,
+      "attempted": 3274,
+      "succeeded": 3274,
+      "error": 0,
+      "unavailable": 0,
+      "missing": 0
+    }
+  ],
+  "label_support": [
+    {
+      "population": "classifier+smiles",
+      "enzyme": "CYP1A2",
+      "purpose": "primary",
+      "n_population": 3274,
+      "n_labeled": 2518,
+      "n_evaluable": 2518,
+      "n_positive": 1290,
+      "n_negative": 1228,
+      "n_scaffolds": 1546
+    },
+    {
+      "population": "classifier+smiles",
+      "enzyme": "CYP2C9",
+      "purpose": "primary",
+      "n_population": 3274,
+      "n_labeled": 2419,
+      "n_evaluable": 2419,
+      "n_positive": 872,
+      "n_negative": 1547,
+      "n_scaffolds": 1440
+    },
+    {
+      "population": "classifier+smiles",
+      "enzyme": "CYP2C19",
+      "purpose": "primary",
+      "n_population": 3274,
+      "n_labeled": 2565,
+      "n_evaluable": 2565,
+      "n_positive": 1270,
+      "n_negative": 1295,
+      "n_scaffolds": 1543
+    },
+    {
+      "population": "classifier+smiles",
+      "enzyme": "CYP2D6",
+      "purpose": "primary",
+      "n_population": 3274,
+      "n_labeled": 2637,
+      "n_evaluable": 2637,
+      "n_positive": 550,
+      "n_negative": 2087,
+      "n_scaffolds": 1587
+    },
+    {
+      "population": "classifier+smiles",
+      "enzyme": "CYP3A4",
+      "purpose": "primary",
+      "n_population": 3274,
+      "n_labeled": 2425,
+      "n_evaluable": 2425,
+      "n_positive": 1133,
+      "n_negative": 1292,
+      "n_scaffolds": 1509
+    }
+  ],
+  "notes": [
+    "Metrics condition on successful predictions; failures are not assigned invented scores.",
+    "Attempted counts ok plus error records; unavailable and missing are reported separately.",
+    "Single-class samples have undefined AUC and AP here; bootstrap draws with one class are skipped.",
+    "Intervals reflect scaffold resampling, not model-training variability.",
+    "Scores are uncalibrated ranking scores on one exploratory split, not calibrated risk."
+  ]
+}

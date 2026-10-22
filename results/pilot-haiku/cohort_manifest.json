@@ -1,0 +1,18 @@
+{
+  "created_at": "2026-10-20T20:12:41.257981+00:00",
+  "artifact_hashes": {
+    "manifest.json": "7977aceebeeb15a16dde92b6772e11d81d557ccef99010504985808819786fd1",
+    "manifest.csv": "405f38acfecc4fe3b113b1a1a8bf548f5e0be43af6ddd4f8d700669e11e4a061",
+    "test.csv": "2e0b52b2f55525255a483382ecdfff3cd21284d9b4f5b9a2fdadbf8d0a2370ec",
+    "models/CYP1A2.joblib": "70a6f3c52024e13ac2ba7eb78b57a50cb719b73ffa160cf319d0eba3903c7ee8",
+    "models/CYP2C9.joblib": "f6dc79a280e1d27840339cee3adc0844f80b48d465bca9fd182091ce8a719c3c",
+    "models/CYP2C19.joblib": "ce588126437c1bd462830c613e189efcb559935c480e07e64780dbac27c88999",
+    "models/CYP2D6.joblib": "7deedb724946a6145266d7a0c824e363c35ffc19abb241be355a9fc2cdbce831",
+    "models/CYP3A4.joblib": "bb3974c906d1951efb7230af6e0306f2b79e8918d49356cc3c04b0a00c6eb4fe"
+  },
+  "cohort_sha256": "c1a5b9937770bac33405e93b439c8770ade263d3d722cbd614b18210516a8914",
+  "sampling": "uniform molecule sample",
+  "seed": 42,
+  "n": 120,
+  "exploratory": true
+}

@@ -1,0 +1,42 @@
+{
+  "endpoint": "CYP3A4",
+  "budgets": [
+    24,
+    48,
+    96
+  ],
+  "policies": {
+    "score_only": 1.0,
+    "diversity_cap": 0.8
+  },
+  "tie_break": "original molecule_id ascending",
+  "coverage": {
+    "cohort_molecules": 3274,
+    "missing_endpoint_labels": 849,
+    "labelled_without_paired_scores": 0,
+    "evaluated_molecules": 2425,
+    "positive_labels": 1133,
+    "successful_scores": {
+      "classifier": 3274,
+      "smiles": 3274
+    }
+  },
+  "python": "3.11.14",
+  "rdkit": "2023.09.6",
+  "pandas": "2.3.3",
+  "sources": {
+    "results/full-llm/cohort.csv": "d3593c08238c5bf918510fdabd5572c1555dacf695440dc3f0afead66de482a5",
+    "results/full-llm/predictions.jsonl.gz": "b9664e0d04b4214d8045cfabc338f343a077bff6587d3e0340bb44137ffb4edd",
+    "results/full-llm/cohort_manifest.json": "7292e7aea41113328135880bb0ea2b092fdd407c15f298754c62b8e60d92369f",
+    "src/research/screening_budget.py": "1efbd7b3f1a3ce7a3d582a08ec8803548c4030f09f0d390f3b3b37a044692369",
+    "src/research/screening_budget_figure.py": "2bd1109baa72211e69a5377f5964f13631a3d2805e98d807598688b0049fd12f",
+    "src/shortlist.py": "1255ddc8307da0aaa88f40f4402fd39f5f3e769e0b28ead6327abc54d601df81",
+    "src/chemistry.py": "493388970483ea5b9953a7f0834a3434685b95185f1dc8a1ad7937ffba71562c",
+    "requirements.lock.txt": "841b5c06a60d5a9d9e4ed8ec0851d3bcd7793637a88814aef0bfe0e80453babb"
+  },
+  "outputs": {
+    "summary.csv": "d3627ef3270e8c10753a7a53f0927ae77ab430a043daa688cb3b478be3f1d47c",
+    "selected-compounds.csv": "8b074fe45c554c1cfad925a9113b79f221cf33fb95cff47f891eeb4887e9c933"
+  },
+  "interpretation": "Post-hoc retrospective outcomes; no prospective validation. Earlier classifier-family selection used test performance. Tie-order sensitivity and statistical uncertainty are not estimated."
+}

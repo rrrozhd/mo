@@ -1,0 +1,105 @@
+{
+  "cohort_size": 120,
+  "bootstrap": {
+    "replicates": 2000,
+    "seed": 42,
+    "unit": "scaffold",
+    "confidence": 0.95
+  },
+  "coverage": [
+    {
+      "population": "full_selected",
+      "arm": "classifier",
+      "planned": 120,
+      "attempted": 120,
+      "succeeded": 120,
+      "error": 0,
+      "unavailable": 0,
+      "missing": 0
+    },
+    {
+      "population": "full_selected",
+      "arm": "smiles",
+      "planned": 120,
+      "attempted": 120,
+      "succeeded": 120,
+      "error": 0,
+      "unavailable": 0,
+      "missing": 0
+    },
+    {
+      "population": "full_selected",
+      "arm": "name",
+      "planned": 120,
+      "attempted": 120,
+      "succeeded": 120,
+      "error": 0,
+      "unavailable": 0,
+      "missing": 0
+    }
+  ],
+  "label_support": [
+    {
+      "population": "classifier+smiles+name",
+      "enzyme": "CYP1A2",
+      "purpose": "primary",
+      "n_population": 120,
+      "n_labeled": 93,
+      "n_evaluable": 93,
+      "n_positive": 43,
+      "n_negative": 50,
+      "n_scaffolds": 88
+    },
+    {
+      "population": "classifier+smiles+name",
+      "enzyme": "CYP2C9",
+      "purpose": "primary",
+      "n_population": 120,
+      "n_labeled": 85,
+      "n_evaluable": 85,
+      "n_positive": 28,
+      "n_negative": 57,
+      "n_scaffolds": 80
+    },
+    {
+      "population": "classifier+smiles+name",
+      "enzyme": "CYP2C19",
+      "purpose": "primary",
+      "n_population": 120,
+      "n_labeled": 99,
+      "n_evaluable": 99,
+      "n_positive": 52,
+      "n_negative": 47,
+      "n_scaffolds": 93
+    },
+    {
+      "population": "classifier+smiles+name",
+      "enzyme": "CYP2D6",
+      "purpose": "primary",
+      "n_population": 120,
+      "n_labeled": 90,
+      "n_evaluable": 90,
+      "n_positive": 20,
+      "n_negative": 70,
+      "n_scaffolds": 85
+    },
+    {
+      "population": "classifier+smiles+name",
+      "enzyme": "CYP3A4",
+      "purpose": "primary",
+      "n_population": 120,
+      "n_labeled": 95,
+      "n_evaluable": 95,
+      "n_positive": 43,
+      "n_negative": 52,
+      "n_scaffolds": 89
+    }
+  ],
+  "notes": [
+    "Metrics condition on successful predictions; failures are not assigned invented scores.",
+    "Attempted counts ok plus error records; unavailable and missing are reported separately.",
+    "Single-class samples have undefined AUC and AP here; bootstrap draws with one class are skipped.",
+    "Intervals reflect scaffold resampling, not model-training variability.",
+    "Scores are uncalibrated ranking scores on one exploratory split, not calibrated risk."
+  ]
+}
