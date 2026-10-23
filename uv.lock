@@ -1108,12 +1108,9 @@ dependencies = [
     { name = "openai" },
     { name = "pandas" },
     { name = "pydantic" },
-    { name = "pytdc" },
     { name = "rdkit" },
     { name = "scikit-learn" },
     { name = "setuptools" },
-    { name = "torch" },
-    { name = "transformers" },
     { name = "werkzeug" },
     { name = "xgboost" },
 ]
@@ -1121,6 +1118,11 @@ dependencies = [
 [package.dev-dependencies]
 dev = [
     { name = "pytest" },
+]
+research = [
+    { name = "pytdc" },
+    { name = "torch" },
+    { name = "transformers" },
 ]
 
 [package.metadata]
@@ -1134,18 +1136,20 @@ requires-dist = [
     { name = "openai", specifier = "==3.35.1" },
     { name = "pandas", specifier = "==2.3.3" },
     { name = "pydantic", specifier = "==2.14.1" },
-    { name = "pytdc", specifier = "==1.1.15" },
     { name = "rdkit", specifier = "==2023.9.6" },
     { name = "scikit-learn", specifier = "==1.9.1" },
     { name = "setuptools", specifier = "==80.10.2" },
-    { name = "torch", specifier = "==2.14.1" },
-    { name = "transformers", specifier = "==4.50.3" },
     { name = "werkzeug", specifier = "==3.1.9" },
     { name = "xgboost", specifier = "==3.2.0" },
 ]
 
 [package.metadata.requires-dev]
 dev = [{ name = "pytest", specifier = "==9.1.1" }]
+research = [
+    { name = "pytdc", specifier = "==1.1.15" },
+    { name = "torch", specifier = "==2.14.1" },
+    { name = "transformers", specifier = "==4.50.3" },
+]
 
 [[package]]
 name = "mpmath"

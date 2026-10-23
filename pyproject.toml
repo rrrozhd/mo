@@ -14,18 +14,16 @@ dependencies = [
     "openai==3.35.1",
     "pandas==2.3.3",
     "pydantic==2.14.1",
-    "pytdc==1.1.15",
     "rdkit==2023.9.6",
     "scikit-learn==1.9.1",
     "setuptools==80.10.2",
-    "torch==2.14.1",
-    "transformers==4.50.3",
     "werkzeug==3.1.9",
     "xgboost==3.2.0",
 ]
 
 [dependency-groups]
 dev = ["pytest==9.1.1"]
+research = ["pytdc==1.1.15", "torch==2.14.1", "transformers==4.50.3"]
 
 [tool.uv]
 # Preserve the scientific environment recorded in requirements.lock.txt.

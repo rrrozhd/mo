@@ -26,22 +26,48 @@ The repository includes the frozen model bundles, original CYP input tables,
 recorded evidence, sample compounds, and built interface. No retraining or frontend
 build is required to open the workbench.
 
+Install Git and [uv](https://docs.astral.sh/uv/getting-started/installation/) first.
+On macOS, install OpenMP before starting the app: `brew install libomp`.
+On Debian/Ubuntu Linux, install OpenMP and RDKit's drawing libraries:
+`sudo apt-get update && sudo apt-get install libgomp1 libxrender1 libxext6`.
+The commands below use a macOS/Linux shell. `uv` downloads Python 3.11.14 when
+needed and installs the locked dependencies; the first install needs internet
+access. Node is only needed to rebuild the interface. Training and dataset
+discovery use the separate `research` dependency group described below.
+The demo has been verified on macOS ARM and Debian Linux ARM.
+
 ```sh
+git clone https://github.com/rrrozhd/mo.git
+cd mo
 uv sync --locked
 .venv/bin/python scripts/verify_release.py
 .venv/bin/python -m src.workbench --source-mode recorded
 ```
 
-Open **http://127.0.0.1:8765**. Use **+ → Load 20-compound sample**, inspect the
-candidates, compare structures, and retrieve the bundled recorded evidence. These
-controls work without credentials. To use the conversational assistant and live
-sources, set `OPENROUTER_API_KEY` in the launching shell, then start with
-`--source-mode live`. Calls use your provider account; keys and paid-call logs are
-not included in the repository.
+Wait for the terminal to print the local address, then open
+**http://127.0.0.1:8765**. To walk through the demo without credentials:
+
+1. Use **+ → Load 20-compound sample**, then open **Candidates**.
+2. Open the actions for **candidate-08** and choose **View structure** to inspect
+   its molecular drawing. Close the drawing, then choose **Look up evidence**
+   from the same candidate's actions.
+3. Open **Evidence**, inspect the recorded assay and source links, and close it.
+   Use **Mark reviewed** for the batch, then **Export** to download the session
+   JSON, including the batch and evidence.
+
+Bundled observations cover candidate-08, candidate-09, candidate-10, candidate-12
+and candidate-20. Other candidates report `not_recorded` in this mode; this does
+not mean no experimental evidence exists. Recorded mode works offline after
+installation, except when opening external research links.
+
+To use the conversational assistant and live sources shown in the video, set
+`OPENROUTER_API_KEY` in the launching shell, then start with `--source-mode live`.
+Calls use your provider account; keys and paid-call logs are not included in the
+repository. The direct controls above work without a key. Use **+ → Candidate
+CSV** to attach [the named-drug batch](examples/named-drugs.csv).
 
 The [retained demo session](examples/named-drugs-demo-session.json) contains the
-recorded chat and tool results. macOS requires
-the OpenMP runtime for the supplied LightGBM/XGBoost models (`brew install libomp`).
+recorded chat and tool results.
 
 An exploratory study of five CYP assay-label predictors, as deterministic
 scientific computing. Structure in, five uncalibrated inhibition scores out, with
@@ -187,22 +213,29 @@ interpretation is included in these two core functions.
 
 ## Setup
 
-Use Python 3.11. The dependency lock includes PyTDC's RDKit 2023.9.6 and the
-setuptools version that still provides `pkg_resources`. PyTDC brings a large
-transitive dependency set. LightGBM/XGBoost also require their platform's OpenMP
-runtime; the tested macOS host already has it.
+Follow **Run the demo** above to clone and install first. Python is pinned to
+3.11.14 in `.python-version`. RDKit stays pinned to 2023.9.6 to match the frozen
+models. Full tests and retraining also need the optional research dependencies:
 
 ```sh
-cd mo
-uv sync --locked
+uv sync --locked --group research
 .venv/bin/python -m pytest tests -q
 ```
+
+The research group preserves the pinned PyTDC, Torch and Transformers versions,
+including PyTDC's large transitive dependency set. It has been verified on macOS
+ARM. Full research installation remains unverified on Linux ARM: TileDB's native
+build failed in the clean container. The default demo install does not include
+that dependency. The lock keeps a setuptools version that provides `pkg_resources`.
 
 `uv.lock` is the default install path. `requirements.lock.txt` retains the original
 scientific environment and can also be installed with `uv pip sync`; shared package
 versions match.
 
 ## Train and freeze a run
+
+Install the `research` group as shown above before retraining. The supplied model
+bundles do not need this group for inference.
 
 ```sh
 .venv/bin/python -m src.prediction.train --data-dir data --output-dir runs/retrained-models --seed 42 --jobs 4
