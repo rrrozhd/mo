@@ -7,10 +7,10 @@ from typing import Any
 import pytest
 from rdkit import DataStructs
 
-from src.chemistry import ENZYMES, fingerprints
-from src.chembl import EvidenceClient
-from src.screening import load_candidates
-from src.shortlist import select_shortlist
+from src.chemistry.features import ENZYMES, fingerprints
+from src.sources.chembl import EvidenceClient
+from src.screening.cli import load_candidates
+from src.screening.shortlist import select_shortlist
 
 
 def science():
@@ -348,7 +348,7 @@ def analysis_operations(tmp_path, monkeypatch):
 
 @pytest.mark.parametrize("name", ["predict_cyp", "find_analogs", "show_attribution", "show_neighbourhood"])
 def test_analysis_dispatch_binds_selected_artifacts_and_provenance(tmp_path, monkeypatch, name):
-    from src import cyp_tools
+    from src.prediction import cyp as cyp_tools
 
     ops, artifacts = analysis_operations(tmp_path, monkeypatch)
     calls = []
@@ -367,7 +367,7 @@ def test_analysis_dispatch_binds_selected_artifacts_and_provenance(tmp_path, mon
                                       ("models/CYP1A2.joblib", "predict_cyp"),
                                       ("manifest.csv", "find_analogs")])
 def test_analysis_refuses_changed_artifacts_before_tool_execution(tmp_path, monkeypatch, file, name):
-    from src import cyp_tools
+    from src.prediction import cyp as cyp_tools
 
     ops, artifacts = analysis_operations(tmp_path, monkeypatch)
     (artifacts / file).write_bytes(b"replaced")
@@ -377,7 +377,7 @@ def test_analysis_refuses_changed_artifacts_before_tool_execution(tmp_path, monk
 
 
 def test_analysis_refuses_artifacts_changed_during_tool_execution(tmp_path, monkeypatch):
-    from src import cyp_tools
+    from src.prediction import cyp as cyp_tools
 
     ops, artifacts = analysis_operations(tmp_path, monkeypatch)
 
@@ -391,7 +391,7 @@ def test_analysis_refuses_artifacts_changed_during_tool_execution(tmp_path, monk
 
 
 def test_custom_screen_analysis_fails_closed_unless_explicitly_injected(monkeypatch):
-    from src import cyp_tools
+    from src.prediction import cyp as cyp_tools
 
     monkeypatch.setattr(cyp_tools, "predict_cyp", lambda **args: pytest.fail("no global artifact fallback"))
     ops, _ = operations()
@@ -410,7 +410,7 @@ def test_custom_screen_analysis_fails_closed_unless_explicitly_injected(monkeypa
 
 
 def test_missing_analysis_artifact_never_falls_back_to_default_directory(tmp_path, monkeypatch):
-    from src import cyp_tools
+    from src.prediction import cyp as cyp_tools
 
     ops, artifacts = analysis_operations(tmp_path, monkeypatch)
     (artifacts / "models/CYP2C19.joblib").unlink()

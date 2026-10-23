@@ -9,9 +9,9 @@ from xml.etree import ElementTree
 import pytest
 from werkzeug.datastructures import MultiDict
 
-from src.chembl import EvidenceClient
+from src.sources.chembl import EvidenceClient
 from src.workbench.science import ScientificOperations
-from src import cyp_tools
+from src.prediction import cyp as cyp_tools
 from src.workbench.session import Session
 
 

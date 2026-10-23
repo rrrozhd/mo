@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 from rdkit import rdBase
 
-from ..shortlist import select_shortlist
+from ..screening.shortlist import select_shortlist
 
 ROOT = Path(__file__).resolve().parents[2]
 ARMS = ("classifier", "smiles")
@@ -132,7 +132,7 @@ def main():
     render(summary, args.output, population=coverage["evaluated_molecules"])
     source_paths = [args.cohort, args.predictions, args.manifest, Path(__file__),
                     ROOT / "src/research/screening_budget_figure.py",
-                    ROOT / "src/shortlist.py", ROOT / "src/chemistry.py",
+                    ROOT / "src/screening/shortlist.py", ROOT / "src/chemistry/features.py",
                     ROOT / "requirements.lock.txt"]
     provenance = {
         "endpoint": "CYP3A4", "budgets": list(BUDGETS),

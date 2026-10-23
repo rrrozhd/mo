@@ -21,7 +21,7 @@ from urllib.request import Request, urlopen
 
 from rdkit import DataStructs
 
-from .chemistry import canonical_smiles, fingerprints
+from ..chemistry.features import canonical_smiles, fingerprints
 
 API = "https://www.ebi.ac.uk/chembl/api/data"
 EXPLORER = "https://www.ebi.ac.uk/chembl/explore"

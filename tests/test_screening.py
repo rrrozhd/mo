@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from src.screening import load_candidates
+from src.screening.cli import load_candidates
 
 
 class FakeScreen:
@@ -26,7 +26,7 @@ def test_load_candidates_ignores_labels_and_rejects_ambiguous_inputs(tmp_path):
 
 
 def test_cli_shortlist_and_output_path_protection(tmp_path, monkeypatch, capsys):
-    from src import screening
+    from src.screening import cli as screening
     path = tmp_path / "input.csv"
     original = "id,smiles\na,CCO\nb,c1ccccc1\nc,CCN\n"
     path.write_text(original)
@@ -45,7 +45,7 @@ def test_cli_shortlist_and_output_path_protection(tmp_path, monkeypatch, capsys)
 @pytest.mark.parametrize("target", ["candidate", "model"])
 @pytest.mark.parametrize("alias", ["direct", "symlink", "hardlink"])
 def test_shortlist_protects_inputs_before_scoring(tmp_path, monkeypatch, target, alias):
-    from src import screening
+    from src.screening import cli as screening
 
     candidates = tmp_path / "input.csv"
     candidates.write_text("id,smiles\na,CCO\n")
@@ -66,14 +66,15 @@ def test_shortlist_protects_inputs_before_scoring(tmp_path, monkeypatch, target,
 
 
 def test_cli_rejects_the_removed_agent_command(capsys):
-    from src import screening
+    from src.screening import cli as screening
     with pytest.raises(SystemExit):
         screening.main(["agent", "--candidates", "x.csv", "--model", "m", "--prompt", "p"])
 
 
 def test_cli_interrupted_http_returns_error_json(tmp_path, monkeypatch, capsys):
     from http.client import IncompleteRead
-    from src import chembl as evidence, screening
+    from src.sources import chembl as evidence
+    from src.screening import cli as screening
 
     class InterruptedResponse:
         def __enter__(self):
@@ -93,7 +94,7 @@ def test_cli_interrupted_http_returns_error_json(tmp_path, monkeypatch, capsys):
 
 
 def test_cli_plan_keeps_partial_evidence_and_writes_readable_report(tmp_path, monkeypatch, capsys):
-    from src import screening
+    from src.screening import cli as screening
 
     path = tmp_path / "input.csv"
     path.write_text("id,smiles\na,CCO\nb,c1ccccc1\nc,CCN\n")
@@ -127,7 +128,7 @@ def test_cli_plan_keeps_partial_evidence_and_writes_readable_report(tmp_path, mo
 
 @pytest.mark.parametrize("collision", ["candidate", "outputs", "symlink", "hardlink", "model"])
 def test_plan_rejects_output_collisions_before_scoring(tmp_path, monkeypatch, capsys, collision):
-    from src import screening
+    from src.screening import cli as screening
 
     path = tmp_path / "input.csv"
     original = "id,smiles\na,CCO\n"
@@ -157,7 +158,7 @@ def test_plan_rejects_output_collisions_before_scoring(tmp_path, monkeypatch, ca
 
 
 def test_plan_rejects_bad_evidence_limit_before_scoring(tmp_path, monkeypatch, capsys):
-    from src import screening
+    from src.screening import cli as screening
 
     monkeypatch.setattr(screening, "CYP3A4Screen", lambda _: pytest.fail("scoring must not start"))
     with pytest.raises(SystemExit):
@@ -168,7 +169,7 @@ def test_plan_rejects_bad_evidence_limit_before_scoring(tmp_path, monkeypatch, c
 @pytest.mark.parametrize("destination", ["--output", "--report"])
 def test_plan_write_failure_preserves_retrieved_result_on_stdout(tmp_path, monkeypatch, capsys, destination):
     from pathlib import Path
-    from src import screening
+    from src.screening import cli as screening
 
     path = tmp_path / "input.csv"
     path.write_text("id,smiles\na,CCO\n")
@@ -197,7 +198,8 @@ def test_plan_write_failure_preserves_retrieved_result_on_stdout(tmp_path, monke
 def test_plan_nonfinite_remote_measurement_keeps_batch_and_continues(tmp_path, monkeypatch, capsys):
     import io
     from urllib.parse import parse_qs, urlparse
-    from src import chembl as evidence, screening
+    from src.sources import chembl as evidence
+    from src.screening import cli as screening
 
     path = tmp_path / "input.csv"
     path.write_text("id,smiles\na,CCO\nb,c1ccccc1\n")

@@ -7,8 +7,8 @@ import time
 from typing import Any
 from uuid import uuid4
 
-from ..chemistry import canonical_smiles
-from ..chembl import EvidenceClient
+from ..chemistry.features import canonical_smiles
+from ..sources.chembl import EvidenceClient
 from .science import RecordedEvidence, canonical_json, evidence_snapshot
 
 MAX_TURNS = MAX_REVISIONS = 100
@@ -396,7 +396,7 @@ class Session:
             assert isinstance(self._source, EvidenceClient)
             result = self._source.search_analogs(query, max_results=max_results, threshold=threshold,
                                                  deadline=op["_deadline"], clock=self._clock)
-            from ..depictions import depict
+            from ..chemistry.depictions import depict
             for analog in result["analogs"]:
                 analog["svg"] = depict(analog["smiles"])
         finally:

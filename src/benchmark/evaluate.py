@@ -11,7 +11,7 @@ import pandas as pd
 from sklearn.metrics import average_precision_score, roc_auc_score
 
 
-from .chemistry import ENZYMES
+from ..chemistry.features import ENZYMES
 ARMS = ("classifier",)
 LLM_ARMS = ("classifier", "smiles", "name")
 METRICS = {"auc": roc_auc_score, "ap": average_precision_score}

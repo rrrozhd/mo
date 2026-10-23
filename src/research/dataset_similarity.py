@@ -13,7 +13,7 @@ import numpy as np
 from rdkit import Chem, rdBase
 from rdkit.Chem import rdFingerprintGenerator
 
-from ..chemistry import MORGAN_BITS, MORGAN_RADIUS, nearest_distances
+from ..chemistry.features import MORGAN_BITS, MORGAN_RADIUS, nearest_distances
 
 # shortcut: novelty is sampled, not exhaustive, so one dataset stays under a
 # minute. Raise both caps for the final published table.

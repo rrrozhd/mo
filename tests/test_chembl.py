@@ -7,7 +7,7 @@ from urllib.parse import parse_qs, urlparse
 
 import pytest
 
-from src import chembl as evidence
+from src.sources import chembl as evidence
 
 
 def page(key, rows, total=None, next_page=None):

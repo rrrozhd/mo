@@ -35,7 +35,7 @@ def batch():
 
 
 def test_report_separates_predictions_observations_and_incomplete_evidence():
-    from src.batch_report import render_batch_report
+    from src.screening.report import render_batch_report
 
     report = batch()
     original = deepcopy(report)
@@ -57,7 +57,7 @@ def test_report_separates_predictions_observations_and_incomplete_evidence():
 
 
 def test_report_escapes_external_text_and_allows_only_safe_http_links():
-    from src.batch_report import render_batch_report
+    from src.screening.report import render_batch_report
 
     report = batch()
     identifier = "a|b\n# forged <script> [click](javascript:bad)"
@@ -80,7 +80,7 @@ def test_report_escapes_external_text_and_allows_only_safe_http_links():
 
 
 def test_missing_evidence_and_empty_selection_do_not_imply_inactivity():
-    from src.batch_report import render_batch_report
+    from src.screening.report import render_batch_report
 
     report = batch()
     report["evidence"] = {}
@@ -96,7 +96,7 @@ def test_missing_evidence_and_empty_selection_do_not_imply_inactivity():
 
 
 def test_distinct_candidate_ids_remain_distinct_in_the_report():
-    from src.batch_report import render_batch_report
+    from src.screening.report import render_batch_report
 
     report = batch()
     identifiers = ["a b", "a\nb", "a  b", "a\tb", "candidate&copy;1", "candidate©1"]
@@ -112,7 +112,7 @@ def test_distinct_candidate_ids_remain_distinct_in_the_report():
 
 
 def test_literal_entities_in_measurements_are_preserved_as_text():
-    from src.batch_report import render_batch_report
+    from src.screening.report import render_batch_report
 
     report = batch()
     report["evidence"]["a"]["records"][0]["assay_description"] = "A &copy; label; B &lt; threshold"

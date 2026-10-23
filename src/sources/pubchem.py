@@ -19,7 +19,7 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
-from .chemistry import canonical_smiles
+from ..chemistry.features import canonical_smiles
 
 
 SOURCE = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/smiles/property/Title,SMILES/JSON"

@@ -10,10 +10,10 @@ from uuid import uuid4
 
 from rdkit import Chem, DataStructs
 
-from ..chemistry import ENZYMES, canonical_smiles, fingerprints
-from ..chembl import EvidenceClient
-from ..screening import validate_candidates
-from ..shortlist import CYP3A4Screen, select_shortlist
+from ..chemistry.features import ENZYMES, canonical_smiles, fingerprints
+from ..sources.chembl import EvidenceClient
+from ..screening.cli import validate_candidates
+from ..screening.shortlist import CYP3A4Screen, select_shortlist
 
 RECORD_LIMIT = 10
 MODEL_ANALYSES = {"predict_cyp", "show_attribution"}
@@ -100,7 +100,7 @@ class ScientificOperations:
         if self._analysis is not None:
             result = self._analysis(name, deepcopy(args))
         else:
-            from .. import cyp_tools
+            from ..prediction import cyp as cyp_tools
 
             hashes = self._verify_analysis_artifacts(name)
             kwargs = {"artifacts": self.artifacts} if name in MODEL_ANALYSES | CORPUS_ANALYSES else {}

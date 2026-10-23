@@ -8,10 +8,10 @@ import numpy as np
 import pandas as pd
 from rdkit import DataStructs
 
-from .chemistry import ENZYMES, canonical_smiles, featurize, fingerprints
+from ..chemistry.features import ENZYMES, canonical_smiles, featurize, fingerprints
 from .models import ModelSuite
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 ARTIFACTS = ROOT / "artifacts"
 MAX_ANALOGS = 25
 
@@ -126,7 +126,7 @@ def find_analogs(smiles: str, enzyme: str, measured_label: int | None = None,
             "measured_meaning": "positive dataset label" if int(label) else "negative dataset label",
             "split": corpus_split[position],
         })
-    from .depictions import depict  # Imported here: depictions reads this module's corpus.
+    from ..chemistry.depictions import depict  # Imported here: depictions reads this module's corpus.
 
     for hit in hits:
         hit["svg"] = depict(hit["smiles"])
@@ -160,20 +160,20 @@ def show_structures(first_smiles: str, second_smiles: str) -> dict:
     Call this whenever you propose an analog, so the chemist sees what actually changed
     instead of reading two SMILES strings.
     """
-    from .depictions import mcs_pair
+    from ..chemistry.depictions import mcs_pair
 
     return mcs_pair(first_smiles, second_smiles)
 
 
 def show_neighbourhood(smiles: str, enzyme: str, *, artifacts=ARTIFACTS) -> dict:
     """Place a molecule among its nearest measured training neighbours, coloured by label."""
-    from .depictions import neighbourhood
+    from ..chemistry.depictions import neighbourhood
 
     return neighbourhood(smiles, enzyme, artifacts=artifacts)
 
 
 def show_attribution(smiles: str, enzyme: str, *, artifacts=ARTIFACTS) -> dict:
     """Weigh each atom by how much deleting it moves the score. Slow; call it only when asked why."""
-    from .depictions import attribution
+    from ..chemistry.depictions import attribution
 
     return attribution(smiles, enzyme, artifacts=artifacts)

@@ -4,7 +4,7 @@ import json
 
 import pytest
 
-from src import cyp_tools
+from src.prediction import cyp as cyp_tools
 from src.workbench.session import SessionError
 from test_external_search_session import result as external_result
 from test_workbench_assistant import Harness, completion, final, intent, keys, tool

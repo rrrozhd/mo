@@ -7,8 +7,9 @@ import openai
 import pandas as pd
 import pytest
 
-from src import benchmark, models
-from src.chemistry import ENZYMES
+from src.benchmark import runner as benchmark
+from src.prediction import models
+from src.chemistry.features import ENZYMES
 
 
 class FakeSuite:

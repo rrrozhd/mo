@@ -17,7 +17,7 @@ from sklearn.impute import SimpleImputer
 from sklearn.metrics import average_precision_score, roc_auc_score
 from sklearn.pipeline import make_pipeline
 
-from .chemistry import (
+from ..chemistry.features import (
     DESCRIPTOR_NAMES, ENZYMES, MORGAN_BITS, MORGAN_RADIUS, canonical_smiles,
     featurize, fingerprints, nearest_distances,
 )
@@ -189,8 +189,10 @@ def train(data_dir, output_dir, seed=42, jobs=4, trees=None):
         "created_at": datetime.now(timezone.utc).isoformat(), "seed": seed,
         "datasets": {enzyme: f"{enzyme}_Veith" for enzyme in ENZYMES},
         "dataset_sha256": dataset_hashes,
-        "source_sha256": {name: hashlib.sha256(Path(__file__).with_name(name).read_bytes()).hexdigest()
-                          for name in ("chemistry.py", "train.py")},
+        "source_sha256": {
+            name: hashlib.sha256((Path(__file__).resolve().parents[1] / name).read_bytes()).hexdigest()
+            for name in ("chemistry/features.py", "prediction/train.py")
+        },
         "split": {"method": "TDC global union scaffold split", "fractions": [0.7, 0.1, 0.2],
                   "counts": manifest["split"].value_counts().to_dict(),
                   "identity_overlap": 0, "scaffold_overlap": 0},

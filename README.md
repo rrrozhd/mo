@@ -53,10 +53,11 @@ replace them.
 
 | Location | Purpose |
 | --- | --- |
-| `src/chemistry.py`, `models.py`, `train.py` | Molecular identity, features, frozen classifiers and training |
-| `src/benchmark.py`, `evaluate.py`, `similarity_bands.py` | Frozen benchmark runs, evaluation and similarity-stratified metrics |
-| `src/chembl.py`, `pubchem.py` | Exact-structure source clients |
-| `src/screening.py`, `shortlist.py`, `batch.py`, `batch_report.py` | Deterministic selection and batch reports |
+| `src/chemistry/` | Molecular identity, features and structure drawings |
+| `src/prediction/` | Frozen classifiers, training and CYP analysis |
+| `src/sources/` | ChEMBL assay retrieval and PubChem name lookup |
+| `src/screening/` | Candidate validation, constrained selection and batch reports |
+| `src/benchmark/` | Frozen benchmark runs, evaluation and similarity-stratified metrics |
 | `src/workbench/` | Local API, session state, scientific operations, assistant and paid ledger |
 | `src/research/` | Cross-dataset similarity study and scientific figures |
 | `ui/src/` | Authored React interface; build output stays in `src/workbench_web/` |
@@ -67,11 +68,9 @@ release. `runs/` holds local executions and is not tracked. `results/` and `audi
 contain retained scientific outputs. Optional cached datasets for the archived
 experiments are not part of the supported demo.
 
-The renamed commands are `src.pubchem` (formerly `src.names`),
-`src.similarity_bands` (formerly `src.decompose`),
-`src.research.dataset_similarity` (formerly `src.audit`) and
-`src.research.figures` (formerly `src.figures`). Run them with `python -m` from the
-repository root. The old module names have no compatibility aliases.
+Run command modules with `python -m` from the repository root. The main entry
+points are `src.workbench`, `src.screening` and `src.benchmark`; training,
+evaluation and source lookup commands live in their respective packages below.
 
 ## Local workbench
 
@@ -198,10 +197,10 @@ versions match.
 ## Train and freeze a run
 
 ```sh
-.venv/bin/python -m src.train --data-dir data --output-dir runs/retrained-models --seed 42 --jobs 4
+.venv/bin/python -m src.prediction.train --data-dir data --output-dir runs/retrained-models --seed 42 --jobs 4
 .venv/bin/python -m src.benchmark prepare --artifacts runs/retrained-models --run-dir runs/pilot --limit 120
 .venv/bin/python -m src.benchmark classifier --artifacts runs/retrained-models --run-dir runs/pilot
-.venv/bin/python -m src.evaluate --run-dir runs/pilot --bootstrap 1000 --seed 42
+.venv/bin/python -m src.benchmark.evaluate --run-dir runs/pilot --bootstrap 1000 --seed 42
 ```
 
 ## Compare the classifiers against input-only LLM baselines
@@ -210,9 +209,9 @@ versions match.
 .venv/bin/python -m src.benchmark prepare --artifacts artifacts --run-dir runs/pilot-llm --limit 120
 .venv/bin/python -m src.benchmark classifier --artifacts artifacts --run-dir runs/pilot-llm
 .venv/bin/python -m src.benchmark smiles --run-dir runs/pilot-llm --max-calls 200 --workers 8
-.venv/bin/python -m src.evaluate --run-dir runs/pilot-llm --arms classifier smiles \
+.venv/bin/python -m src.benchmark.evaluate --run-dir runs/pilot-llm --arms classifier smiles \
   --bootstrap 2000 --seed 42
-.venv/bin/python -m src.similarity_bands --run-dir runs/pilot-llm --arms classifier smiles \
+.venv/bin/python -m src.benchmark.similarity_bands --run-dir runs/pilot-llm --arms classifier smiles \
   --output audit/novelty_decomposition_llm.csv
 ```
 
@@ -226,7 +225,7 @@ model, prompt, score schema and exact inputs in `llm_<arm>_manifest.json`, inclu
 unresolved names. Populate the name cache before starting the name arm:
 
 ```sh
-.venv/bin/python -m src.pubchem --cohort runs/pilot-llm/cohort.csv \
+.venv/bin/python -m src.sources.pubchem --cohort runs/pilot-llm/cohort.csv \
   --output runs/pilot-llm/names.jsonl
 .venv/bin/python -m src.benchmark name --run-dir runs/pilot-llm --max-calls 200
 ```
@@ -235,7 +234,7 @@ Resume rejects changed conditions before calls or result writes. Existing paid
 records without this provenance cannot be resumed or silently migrated; use a new
 run directory. They remain available for evaluation. Even an initial zero-call
 invocation freezes the arm's conditions.
-`src.similarity_bands` repeats the paired contrast inside bands of nearest-training
+`src.benchmark.similarity_bands` repeats the paired contrast inside bands of nearest-training
 similarity, because a single pooled number averages over molecules that nearly
 duplicate the training set and molecules that do not resemble it at all.
 
@@ -247,7 +246,7 @@ and a new benchmark run. It is not expected to reproduce historical file hashes.
 
 Set `ENDPOINTS` to a comma-separated subset of the five CYP endpoints to restrict
 training and evaluation; the models must be retrained for that subset. Arbitrary
-new endpoints also require model-family and dataset mappings in `src/train.py`.
+new endpoints also require model-family and dataset mappings in `src/prediction/train.py`.
 `--arms` makes evaluation report only arms the run actually contains; metrics use
 the population where every requested arm succeeded, so adding an arm shrinks the
 paired cohort. The name arm uses `names.jsonl`, whose PubChem titles are mostly
@@ -260,7 +259,7 @@ test set for a final run. A pilot is a wiring/feasibility check, not the full st
 `classifier` resumes: a molecule already scored in `predictions.jsonl` is skipped,
 and a changed artifact hash refuses the run rather than mixing models.
 
-`src/pubchem.py` supplies the standalone PubChem structure-to-title cache used by
+`src/sources/pubchem.py` supplies the standalone PubChem structure-to-title cache used by
 the name baseline. Its titles may be systematic names, not familiar drug names.
 
 ## Read the results

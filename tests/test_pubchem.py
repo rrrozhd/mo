@@ -8,7 +8,7 @@ from urllib.parse import parse_qs
 
 import pytest
 
-from src import pubchem
+from src.sources import pubchem
 
 
 def response(smiles="CCO", title="Ethanol", cid=702):

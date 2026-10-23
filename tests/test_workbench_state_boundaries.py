@@ -9,8 +9,8 @@ from urllib.error import URLError
 
 import pytest
 
-from src import chembl as evidence
-from src.screening import load_candidates
+from src.sources import chembl as evidence
+from src.screening.cli import load_candidates
 from src.workbench.science import ScientificOperations
 from src.workbench.session import Session, SessionError
 

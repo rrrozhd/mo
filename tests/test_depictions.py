@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from src import depictions
+from src.chemistry import depictions
 
 ETHANOL = "CCO"
 ANISOLE = "COc1ccccc1"
@@ -100,7 +100,7 @@ def test_attribution_passes_artifacts_for_original_and_deleted_atoms(tmp_path, m
 def test_neighbourhood_uses_selected_training_corpus(tmp_path, monkeypatch):
     import numpy as np
     import pandas as pd
-    from src.chemistry import fingerprints
+    from src.chemistry.features import fingerprints
 
     paths = []
     frame = pd.DataFrame({"smiles": ["CCN", "CCCC"], "CYP3A4": [0, 1]})

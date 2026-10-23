@@ -16,8 +16,8 @@ from rdkit.Chem import rdFMCS
 from rdkit.Chem.Draw import rdMolDraw2D
 from sklearn.manifold import MDS
 
-from .chemistry import ENZYMES, canonical_smiles, featurize, fingerprints
-from .cyp_tools import ARTIFACTS, _corpus, _suite
+from .features import ENZYMES, canonical_smiles, featurize, fingerprints
+from ..prediction.cyp import ARTIFACTS, _corpus, _suite
 
 MAX_SMILES = 4000
 MAX_ATTRIBUTION_ATOMS = 60

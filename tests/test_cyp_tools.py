@@ -2,8 +2,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src import cyp_tools
-from src.chemistry import ENZYMES, fingerprints
+from src.prediction import cyp as cyp_tools
+from src.chemistry.features import ENZYMES, fingerprints
 
 
 def corpus_fixture(monkeypatch):
@@ -90,7 +90,7 @@ def write_analysis_artifacts(path, score):
 
 def test_scores_and_corpus_use_selected_artifact_directory_and_refresh_changed_files(tmp_path, monkeypatch):
     from pathlib import Path
-    from src import depictions
+    from src.chemistry import depictions
 
     first, second = tmp_path / "first", tmp_path / "second"
     write_analysis_artifacts(first, .2)
@@ -130,7 +130,7 @@ def test_scores_and_corpus_use_selected_artifact_directory_and_refresh_changed_f
 @pytest.mark.parametrize("name, target", [("show_attribution", "attribution"),
                                           ("show_neighbourhood", "neighbourhood")])
 def test_depiction_wrappers_forward_selected_artifacts(tmp_path, monkeypatch, name, target):
-    from src import depictions
+    from src.chemistry import depictions
 
     received = []
     monkeypatch.setattr(depictions, target, lambda *args, **kwargs: received.append((args, kwargs)) or {})

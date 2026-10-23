@@ -8,9 +8,9 @@ import json
 import httpx2
 import pytest
 
-from src.chembl import EvidenceClient
+from src.sources.chembl import EvidenceClient
 from src.workbench.science import ScientificOperations
-from src import cyp_tools
+from src.prediction import cyp as cyp_tools
 from src.workbench.session import Session, SessionError
 
 
@@ -726,7 +726,7 @@ def test_oversized_complete_context_fails_before_reservation_without_trimming_id
 
 
 def test_chemistry_results_share_paid_loop_and_preserve_both_molecules(monkeypatch):
-    from src import cyp_tools
+    from src.prediction import cyp as cyp_tools
     monkeypatch.setattr(cyp_tools, "predict_cyp", lambda smiles: {"query_smiles": smiles, "enzymes": {}})
     h = Harness([completion(intent()), completion(tools=[
         tool("predict_cyp", {"smiles": "CCO"}),
@@ -790,7 +790,7 @@ def test_attachment_overflow_stops_before_tool_and_keeps_prior_results():
 
 
 def test_chemistry_failure_keeps_successful_tool_events(monkeypatch):
-    from src import cyp_tools
+    from src.prediction import cyp as cyp_tools
     monkeypatch.setattr(cyp_tools, "predict_cyp", lambda smiles: {"query_smiles": smiles})
     h = Harness([completion(intent()), completion(tools=[tool("predict_cyp", {"smiles": "CCO"})]),
                  completion("not-json")])

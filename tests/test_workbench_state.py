@@ -6,7 +6,7 @@ import threading
 
 import pytest
 
-from src.chembl import EvidenceClient
+from src.sources.chembl import EvidenceClient
 from src.workbench.science import RecordedEvidence, ScientificOperations
 
 
@@ -264,7 +264,7 @@ def test_chemistry_results_bind_exact_dataset_structures_and_survive_export():
 
 def test_live_structure_lookup_uses_session_deadline_and_discards_late_result(monkeypatch):
     import io
-    from src import chembl as evidence
+    from src.sources import chembl as evidence
 
     now, requests = [40.0], []
     source = EvidenceClient()

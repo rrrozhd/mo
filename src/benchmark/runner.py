@@ -19,7 +19,7 @@ from typing import Any
 
 import pandas as pd
 
-from .chemistry import ENZYMES, featurize
+from ..chemistry.features import ENZYMES, featurize
 
 LLM_MODEL = "anthropic/claude-haiku-5.5"
 BASE_URL = "https://openrouter.ai/api/v1"
@@ -113,7 +113,7 @@ def record_index(records):
 
 
 def classifier_records(artifacts, run_dir):
-    from .models import ModelSuite
+    from ..prediction.models import ModelSuite
 
     run_dir = Path(run_dir)
     cohort = verify_run(artifacts, run_dir)

@@ -13,7 +13,7 @@ import joblib
 import numpy as np
 from rdkit import DataStructs, rdBase
 
-from .chemistry import canonical_smiles, featurize, fingerprints, nearest_distances
+from ..chemistry.features import canonical_smiles, featurize, fingerprints, nearest_distances
 
 
 def _validated_rows(candidates, structure_key):

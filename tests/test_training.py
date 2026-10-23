@@ -1,14 +1,17 @@
 import hashlib
+import json
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
 import pytest
 from rdkit import DataStructs
 
-from src.chemistry import (
+from src.chemistry.features import (
     DESCRIPTOR_NAMES, ENZYMES, canonical_smiles, featurize, fingerprints, nearest_distances,
 )
-from src.train import classifier, merge_datasets, scaffold_manifest, train
+from src.prediction.models import ModelSuite
+from src.prediction.train import classifier, merge_datasets, scaffold_manifest, train
 
 
 def empty_datasets():
@@ -122,3 +125,45 @@ def test_retraining_refuses_nonempty_output_without_changing_artifacts(tmp_path)
         train(tmp_path / "nonexistent_data", output)
     assert previous.read_text() == '{"previous": true}\n'
     assert list(output.iterdir()) == [previous]
+
+
+def test_tiny_training_writes_loadable_models_and_resolvable_source_hashes(tmp_path, monkeypatch):
+    data_dir = tmp_path / "data"
+    data_dir.mkdir()
+    rows = [{"Drug": atom + "1" + "C" * (size - 1) + "1", "Y": label}
+            for size in range(3, 13) for atom, label in (("C", 0), ("N", 1))]
+    frame = pd.DataFrame(rows)
+    for enzyme in ENZYMES:
+        frame.to_csv(data_dir / f"{enzyme.lower()}_veith.tab", sep="\t", index=False)
+
+    class LocalADME:
+        def __init__(self, name, path):
+            self.path = Path(path) / f"{name.lower()}.tab"
+
+        def get_data(self):
+            return pd.read_csv(self.path, sep="\t")
+
+    # Only fetching is replaced: split, features, estimators and serialization run normally.
+    monkeypatch.setattr("tdc.single_pred.ADME", LocalADME)
+    output = tmp_path / "trained"
+    metrics = train(data_dir, output, seed=42, jobs=1, trees=2)
+
+    assert len(metrics) == 2 * len(ENZYMES)
+    provenance = json.loads((output / "manifest.json").read_text())
+    source_root = Path(__file__).resolve().parents[1] / "src"
+    assert provenance["source_sha256"] == {
+        name: hashlib.sha256((source_root / name).read_bytes()).hexdigest()
+        for name in ("chemistry/features.py", "prediction/train.py")
+    }
+    assert provenance["manifest_sha256"] == hashlib.sha256(
+        (output / "manifest.csv").read_bytes()).hexdigest()
+    assert provenance["dataset_sha256"] == {
+        path.name: hashlib.sha256(path.read_bytes()).hexdigest()
+        for path in data_dir.glob("*.tab")
+    }
+    assert provenance["trees_override"] == 2
+
+    suite = ModelSuite(output)
+    scores = suite.predict(featurize(["CCO"], suite.descriptor_names))["scores"]
+    assert set(scores) == set(ENZYMES)
+    assert all(np.isfinite(score) and 0 <= score <= 1 for score in scores.values())

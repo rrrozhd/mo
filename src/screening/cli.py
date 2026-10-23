@@ -7,8 +7,8 @@ import sys
 from pathlib import Path
 
 from .batch import plan_batch
-from .chemistry import canonical_smiles
-from .chembl import MAX_RECORDS, EvidenceClient
+from ..chemistry.features import canonical_smiles
+from ..sources.chembl import MAX_RECORDS, EvidenceClient
 from .shortlist import CYP3A4Screen, select_shortlist
 
 
@@ -88,7 +88,7 @@ def main(argv=None):
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_text(payload + "\n", encoding="utf-8")
         if args.command == "plan" and args.report:
-            from .batch_report import render_batch_report
+            from .report import render_batch_report
 
             text = ("# Batch planning failed\n\nSee the JSON error output for details.\n"
                     if result.get("status") == "error" else render_batch_report(result))

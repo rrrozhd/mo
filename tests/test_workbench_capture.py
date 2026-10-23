@@ -5,8 +5,8 @@ import json
 from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
 
-from src import chembl as evidence
-from src.screening import load_candidates
+from src.sources import chembl as evidence
+from src.screening.cli import load_candidates
 from src.workbench.science import digest
 
 

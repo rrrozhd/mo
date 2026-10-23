@@ -6,7 +6,7 @@ import joblib
 import numpy as np
 from rdkit import rdBase
 
-from .chemistry import ENZYMES, fingerprints, nearest_distances
+from ..chemistry.features import ENZYMES, fingerprints, nearest_distances
 
 
 class ModelSuite:

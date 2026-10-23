@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 import time
 
-from ..chembl import EvidenceClient
+from ..sources.chembl import EvidenceClient
 from .api import ROOT, _csv, _failure
 from .assistant import Assistant, operation_attachments
 from .paid_ledger import FixedPaidLedger

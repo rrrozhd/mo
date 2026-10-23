@@ -8,8 +8,8 @@ from urllib.parse import parse_qs, quote, urlparse
 import pytest
 from rdkit import DataStructs
 
-from src import chembl
-from src.chemistry import canonical_smiles, fingerprints
+from src.sources import chembl
+from src.chemistry.features import canonical_smiles, fingerprints
 
 
 def candidate(smiles, identifier, similarity, name=None):

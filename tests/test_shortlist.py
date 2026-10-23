@@ -5,11 +5,11 @@ import pandas as pd
 import pytest
 from rdkit import DataStructs, rdBase
 
-from src.chemistry import canonical_smiles, featurize, fingerprints
+from src.chemistry.features import canonical_smiles, featurize, fingerprints
 
 
 def shortlist_module():
-    from src import shortlist
+    from src.screening import shortlist
     return shortlist
 
 

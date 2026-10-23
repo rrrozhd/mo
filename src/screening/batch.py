@@ -1,6 +1,6 @@
 """A reviewable CYP3A4 assay batch, with predictions and measurements kept apart."""
 
-from .chembl import MAX_RECORDS, EvidenceClient
+from ..sources.chembl import MAX_RECORDS, EvidenceClient
 from .shortlist import select_shortlist
 
 

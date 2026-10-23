@@ -12,8 +12,8 @@ from pathlib import Path
 
 import pandas as pd
 
-from .chemistry import fingerprints, nearest_distances
-from .benchmark import verify_run
+from ..chemistry.features import fingerprints, nearest_distances
+from .runner import verify_run
 from .evaluate import ARMS, LLM_ARMS, evaluate
 
 BANDS = (("<0.4", 0.0, 0.4), ("0.4-0.6", 0.4, 0.6), (">=0.6", 0.6, 1.01))

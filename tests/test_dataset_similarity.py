@@ -1,7 +1,7 @@
 """The skeleton key must collapse stereoisomers that canonical SMILES separates."""
 
 from src.research.dataset_similarity import _parsed
-from src.chemistry import canonical_smiles
+from src.chemistry.features import canonical_smiles
 
 L_ALANINE = "C[C@H](N)C(=O)O"
 D_ALANINE = "C[C@@H](N)C(=O)O"

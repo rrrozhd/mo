@@ -12,8 +12,8 @@ import httpx2
 from openai import AsyncOpenAI, OpenAIError
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
-from .. import cyp_tools
-from ..chemistry import canonical_smiles
+from ..prediction import cyp as cyp_tools
+from ..chemistry.features import canonical_smiles
 from .paid_ledger import LedgerError
 from .science import canonical_json
 from .session import SessionError
@@ -644,8 +644,6 @@ class Assistant:
                         elif name == "lookup_structure":
                             query = canonical_smiles(args["smiles"])
                             looked_up.add("structure:" + query)
-                            if len(looked_up) > MAX_LOOKUPS:
-                                raise SessionError("limit_exceeded", "The assistant evidence lookup limit was reached")
                             result = session.lookup_structure(token, query, refresh=args["refresh"])
                         elif name == "search_external_analogs":
                             result = session.search_external_analogs(token, **args)

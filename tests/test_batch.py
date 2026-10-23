@@ -2,7 +2,7 @@ from copy import deepcopy
 
 import pytest
 
-from src.shortlist import select_shortlist
+from src.screening.shortlist import select_shortlist
 
 
 def scored():
@@ -27,7 +27,7 @@ class Evidence:
 
 
 def test_plan_preserves_selection_and_queries_only_selected_once():
-    from src.batch import plan_batch
+    from src.screening.batch import plan_batch
 
     rows, client = scored(), Evidence()
     before = deepcopy(rows)
@@ -47,7 +47,7 @@ def test_plan_preserves_selection_and_queries_only_selected_once():
 
 
 def test_partial_remote_failure_keeps_measurements_batch_and_later_lookups():
-    from src.batch import plan_batch
+    from src.screening.batch import plan_batch
 
     partial = {"status": "error", "query_smiles": "CCCCCC", "error": "metadata timeout",
                "truncated": False, "records": [{"standard_type": "IC50",
@@ -62,7 +62,7 @@ def test_partial_remote_failure_keeps_measurements_batch_and_later_lookups():
 
 
 def test_truncation_and_shortfall_are_explicit_without_relaxing_constraints():
-    from src.batch import plan_batch
+    from src.screening.batch import plan_batch
 
     client = Evidence({"CCCCCC": {"status": "ok", "query_smiles": "CCCCCC",
                        "records": [{"standard_text_value": "Not active"}], "truncated": True}})
@@ -78,7 +78,7 @@ def test_truncation_and_shortfall_are_explicit_without_relaxing_constraints():
     {"include_ids": ["a"], "exclude_ids": ["a"]},
     {"include_ids": ["a", "b"], "max_similarity": .5}])
 def test_invalid_plan_makes_no_evidence_requests(kwargs):
-    from src.batch import plan_batch
+    from src.screening.batch import plan_batch
 
     client = Evidence()
     with pytest.raises(ValueError):

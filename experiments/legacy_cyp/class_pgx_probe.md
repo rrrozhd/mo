@@ -20,7 +20,7 @@ Ten marketed beta blockers, matched two ways against the training data.
 
 | match method | Veith (inhibition) | CarbonMangels (substrate) |
 |---|---|---|
-| canonical **isomeric** SMILES (what `src/chemistry.py` uses) | 0 / 10 | not run |
+| canonical **isomeric** SMILES (what `src/chemistry/features.py` uses) | 0 / 10 | not run |
 | InChIKey **skeleton** block (stereo-insensitive) | **4 / 10** | **7 / 10** |
 
 Veith skeleton hits: propranolol, nadolol, labetalol, acebutolol — all at
@@ -32,7 +32,7 @@ Two consequences:
 
 1. **Any retrospective check on known beta blockers is contaminated** unless they
    are held out explicitly. Hold out by skeleton key, not by canonical SMILES.
-2. **`src/chemistry.py` identity is stereo-sensitive**, so racemic and enantiopure
+2. **`src/chemistry/features.py` identity is stereo-sensitive**, so racemic and enantiopure
    representations of one drug count as two molecules. The documented salt/tautomer
    caveat in the README has a stereo sibling, and it bites every
    cross-dataset join. The 16,366-molecule union may double-count stereovariants.

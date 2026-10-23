@@ -17,7 +17,7 @@ from rdkit import Chem
 from rdkit.Chem.Draw import rdMolDraw2D
 from werkzeug.exceptions import HTTPException, RequestEntityTooLarge
 
-from ..chembl import EvidenceClient
+from ..sources.chembl import EvidenceClient
 from .science import RecordedEvidence, ScientificOperations, canonical_json
 from .session import Session, SessionError
 

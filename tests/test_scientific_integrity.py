@@ -10,11 +10,12 @@ import textwrap
 import pandas as pd
 import pytest
 
-from src import benchmark, similarity_bands
-from src.chemistry import ENZYMES
+from src.benchmark import runner as benchmark
+from src.benchmark import similarity_bands
+from src.chemistry.features import ENZYMES
 
 
-ROOT = Path(benchmark.__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_audit_sampling_is_stable_across_python_hash_seeds():
@@ -145,9 +146,9 @@ def test_decomposition_figure_accepts_empty_similarity_bands(tmp_path, monkeypat
 def test_endpoint_subset_is_shared_by_evaluation_and_llm_prompt():
     program = textwrap.dedent('''
         import pandas as pd
-        from src import benchmark
-        from src.chemistry import ENZYMES
-        from src.evaluate import evaluate
+        from src.benchmark import runner as benchmark
+        from src.chemistry.features import ENZYMES
+        from src.benchmark.evaluate import evaluate
 
         assert ENZYMES == ('CYP3A4',)
         cohort = pd.DataFrame({'molecule_id': ['m0', 'm1'], 'scaffold': ['s0', 's1'],

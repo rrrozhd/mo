@@ -6,7 +6,7 @@ import unittest
 import numpy as np
 import pandas as pd
 
-from src.evaluate import ENZYMES, evaluate, main
+from src.benchmark.evaluate import ENZYMES, evaluate, main
 
 
 def cohort(labels=(0, 0, 1, 1)):

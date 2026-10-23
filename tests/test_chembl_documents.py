@@ -6,7 +6,7 @@ from urllib.parse import parse_qs, urlparse
 
 import pytest
 
-from src import chembl
+from src.sources import chembl
 
 
 def document(identifier="CHEMBL1148425", **overrides):

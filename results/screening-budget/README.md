@@ -31,7 +31,7 @@ the locked environment. To retain the packaged outputs and regenerate separately
 .venv/bin/python -m src.research.screening_budget --output /tmp/cyp-screening-reproduction
 ```
 
-The script reuses the workbench's `src.shortlist.select_shortlist`; it is not a
+The script reuses the workbench's `src.screening.shortlist.select_shortlist`; it is not a
 separate implementation of selection. Compare `summary.csv` and
 `selected-compounds.csv` byte-for-byte between runs. `provenance.json` records source,
 input and output hashes plus runtime versions. PNG, vector SVG, and PDF are exported.

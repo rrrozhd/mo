@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { toast } from "sonner"
 import { request, setCsrf } from "@/lib/api"
 
-export type State = any
+type State = any
 
 export function useSession() {
   const [state, setState] = useState<State | null>(null)
