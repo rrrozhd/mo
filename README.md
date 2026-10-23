@@ -2,6 +2,16 @@
 
 A molecular screening and evidence workbench, starting with CYP inhibition.
 
+[Watch the 2:30 demo on YouTube](https://youtu.be/WdQMBiXYQ-8)
+
+## Inside the workbench
+
+Compare molecular drawings, explore live ChEMBL analogues, and follow the research
+sources behind the assay records. Build a shortlist by setting its size and
+similarity limit, then requiring or excluding individual compounds.
+
+[![Mo comparing rendered compounds, ChEMBL analogues and research sources](assets/mo-preview.gif)](https://youtu.be/WdQMBiXYQ-8)
+
 ## Run the demo
 
 The repository includes the frozen model bundles, original CYP input tables,
@@ -21,9 +31,8 @@ sources, set `OPENROUTER_API_KEY` in the launching shell, then start with
 `--source-mode live`. Calls use your provider account; keys and paid-call logs are
 not included in the repository.
 
-See the [browser demo](docs/demo/README.md) for screenshots and a retained live session,
-and [reproduction instructions](docs/reproduce.md) for frozen-result checks, figure
-regeneration and retraining boundaries. macOS requires
+The [retained demo session](examples/named-drugs-demo-session.json) contains the
+recorded chat and tool results. macOS requires
 the OpenMP runtime for the supplied LightGBM/XGBoost models (`brew install libomp`).
 
 An exploratory study of five CYP assay-label predictors, as deterministic
@@ -52,7 +61,6 @@ replace them.
 | `src/research/` | Cross-dataset similarity study and scientific figures |
 | `ui/src/` | Authored React interface; build output stays in `src/workbench_web/` |
 | `experiments/` | Archived CYP/ORD probes, the incomplete KIBA notebook and the Jev routing experiment |
-| `docs/brief/`, `docs/submission/`, `docs/history/` | Event brief, submission material and historical benchmark results |
 
 `data/` and `artifacts/` contain the frozen CYP inputs and models used for this
 release. `runs/` holds local executions and is not tracked. `results/` and `audit/`
@@ -77,9 +85,6 @@ work without an LLM credential. Set `OPENROUTER_API_KEY` in the environment to
 enable the assistant. Both batch and chemistry questions use the same admitted
 operation, deadline, evidence snapshots and durable paid-call ledger.
 
-See [external compounds and research sources](docs/research-tools.md) for live
-ChEMBL analogue search, source-document enrichment, and example research prompts.
-
 The standalone chat command uses the same assistant and requires an explicit
 candidate dataset:
 
@@ -90,8 +95,7 @@ candidate dataset:
 
 `runs/workbench/paid-calls.jsonl` retains paid accounting across restarts. Do not
 delete or reset it to retry a failed request. See [the UI guide](ui/README.md) for
-build and development commands, and [reproduction instructions](docs/reproduce.md)
-for verification and debugging.
+build and development commands.
 
 ## CYP3A4 core workflow
 
@@ -189,7 +193,7 @@ uv sync --locked
 
 `uv.lock` is the default install path. `requirements.lock.txt` retains the original
 scientific environment and can also be installed with `uv pip sync`; shared package
-versions match. For the submission PDF, run `uv sync --locked --group docs`.
+versions match.
 
 ## Train and freeze a run
 
@@ -302,7 +306,3 @@ Implementation references: [TDC scaffold splitting](https://tdc.readthedocs.io/e
 [RDKit descriptors](https://www.rdkit.org/docs/source/rdkit.Chem.Descriptors.html),
 [PubChem PUG REST](https://pubchem.ncbi.nlm.nih.gov/docs/pug-rest),
 [ChEMBL web services](https://chembl.gitbook.io/chembl-interface-documentation/web-services/chembl-data-web-services).
-
-See [reproduction instructions](docs/reproduce.md) for verification and debugging,
-[the submission](docs/submission/writeup.md) for the reported study, and
-[the archived pilot](docs/history/three-arm-pilot.md) for the earlier three-arm run.

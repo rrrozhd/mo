@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
 import { RawJson } from "@/components/json-block"
+import { Smiles } from "@/components/chat/molecule-attachments"
 import { exact } from "@/lib/api"
 
 const RELATIONSHIP_LABEL: Record<string, string> = {
@@ -102,7 +103,7 @@ export function CompareDialog({
               <div className="grid gap-3 sm:grid-cols-2">
                 {[result.a, result.b].map((side: any) => (
                   <div key={side.id} className="rounded-lg border p-3">
-                    <p className="font-mono text-xs">{exact(side.id)}</p>
+                    <p className="text-sm font-medium">{side.name || exact(side.id)}</p>
                     <dl className="mt-2 space-y-1 text-xs text-muted-foreground">
                       <div className="flex justify-between gap-2">
                         <dt>Score</dt>
@@ -121,7 +122,7 @@ export function CompareDialog({
                         <dd>{side.confidence}</dd>
                       </div>
                     </dl>
-                    <p className="mt-2 font-mono text-[11px] break-all text-muted-foreground">{side.canonical_smiles}</p>
+                    <div className="mt-2"><Smiles value={side.canonical_smiles} /></div>
                   </div>
                 ))}
               </div>

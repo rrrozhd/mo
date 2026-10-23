@@ -1122,10 +1122,6 @@ dependencies = [
 dev = [
     { name = "pytest" },
 ]
-docs = [
-    { name = "pypdf" },
-    { name = "reportlab" },
-]
 
 [package.metadata]
 requires-dist = [
@@ -1150,10 +1146,6 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [{ name = "pytest", specifier = "==9.1.1" }]
-docs = [
-    { name = "pypdf", specifier = "==6.21.0" },
-    { name = "reportlab", specifier = "==5.0.1" },
-]
 
 [[package]]
 name = "mpmath"
@@ -1768,15 +1760,6 @@ wheels = [
 ]
 
 [[package]]
-name = "pypdf"
-version = "6.21.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/d5/40/08cc87810195e5ee37a6917d4b19abc907c8def3a7ce265a81c7f5073304/pypdf-6.21.0.tar.gz", hash = "sha256:c16174c8653abafbe4d023b3c9227d226938d9579ffb5a73b4fac7756c0895a6", size = 7088285, upload-time = "2026-10-16T10:23:18.47Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/f4/64/5cea5792cae22892a4ddba8ed9f7424c77b4cb49fdca5016bd62145c12c6/pypdf-6.21.0-py3-none-any.whl", hash = "sha256:3aec619699dacb1b73f57e87d9adaa4424814517b2cc028de20adba5a37af4c4", size = 405135, upload-time = "2026-10-16T10:23:16.38Z" },
-]
-
-[[package]]
 name = "pytdc"
 version = "1.1.15"
 source = { registry = "https://pypi.org/simple" }
@@ -1895,19 +1878,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/cb/a1/46ba549e65562ca04608b24179b8a7bb6f146ae0e7c6d7f5e70f3339c8ba/regex-2026.9.29-cp311-cp311-win32.whl", hash = "sha256:18ae8eed4526e35bdb754d61562b90bf5c00a67fdcf3cc1380dd59597486631b", size = 268940, upload-time = "2026-09-29T00:46:34.179Z" },
     { url = "https://files.pythonhosted.org/packages/4d/4a/aab232183c70fdcf77bcf0c51819da02ec522e393e6a0bf00bcf2142e21f/regex-2026.9.29-cp311-cp311-win_amd64.whl", hash = "sha256:1043aedf5917caa861bcb25a9c11460049656bdf0017a90a309fa8f255467725", size = 280641, upload-time = "2026-09-29T00:46:35.484Z" },
     { url = "https://files.pythonhosted.org/packages/33/b1/7c05954af0f51de376df2ba97f7f78a8b79334c7e5b3d2d9f2aead1f4d3d/regex-2026.9.29-cp311-cp311-win_arm64.whl", hash = "sha256:352cf115a810b357caa35193ab656ecf5ef41056855e82f292c99e8514f8d954", size = 279411, upload-time = "2026-09-29T00:46:37.193Z" },
-]
-
-[[package]]
-name = "reportlab"
-version = "5.0.1"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "charset-normalizer" },
-    { name = "pillow" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/4a/51/dbe28534ae12c852f61be91f039f343305fd1f34f1c66b8de75afae7a525/reportlab-5.0.1.tar.gz", hash = "sha256:ebd13154be1c8515e665de70bd2d303ae9ddc3ef47e44afd5116441ca0283a26", size = 3945711, upload-time = "2026-08-20T13:48:16.461Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/db/cb/dacbc268cb68d0428ea2cbd85266195a9ab3e677449589ddae59bd7542ac/reportlab-5.0.1-py3-none-any.whl", hash = "sha256:1c36e6bb0e71780c72331eba60da7f602e8d4389a8723825af71342e49d791e8", size = 1957258, upload-time = "2026-08-20T13:48:14.026Z" },
 ]
 
 [[package]]

@@ -26,7 +26,6 @@ dependencies = [
 
 [dependency-groups]
 dev = ["pytest==9.1.1"]
-docs = ["reportlab==5.0.1", "pypdf==6.21.0"]
 
 [tool.uv]
 # Preserve the scientific environment recorded in requirements.lock.txt.

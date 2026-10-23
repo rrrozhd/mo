@@ -24,4 +24,5 @@ work/
 .explainers/
 ui/node_modules/
 output/
+/docs/
 .DS_Store

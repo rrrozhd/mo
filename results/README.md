@@ -1,7 +1,6 @@
 # Evidence for the reported numbers
 
-`runs/` is not tracked, so the files behind the [submission](../docs/submission/writeup.md)
-and [three-arm pilot](../docs/history/three-arm-pilot.md) are copied here.
+`runs/` is not tracked, so the retained benchmark outputs are copied here.
 Each is raw output, not a transcription.
 
 | File | What it is |

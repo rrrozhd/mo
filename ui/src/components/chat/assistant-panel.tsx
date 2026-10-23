@@ -9,7 +9,7 @@ import { MarkdownAnswer } from "@/components/chat/markdown-answer"
 import { Json, RawJson } from "@/components/json-block"
 import {
   AnalogList, Attribution, EvidenceRecords, ExternalAnalogList, Neighbourhood, ScoreBars,
-  SourceDocuments, StructurePair,
+  Smiles, SourceDocuments, StructurePair,
 } from "@/components/chat/molecule-attachments"
 
 const BLOCK_TITLE: Record<string, string> = {
@@ -44,6 +44,7 @@ function groupAnalogAttachments(blocks: any[]) {
 }
 
 function Attachment({ block }: { block: any }) {
+  const queryName = block.data?.query_name ?? block.data?.name
   const body =
     block.kind === "scores" ? <ScoreBars left={block.data} /> :
     block.kind === "analogs" ? <AnalogList data={block.data} groups={block.analogGroups} /> :
@@ -57,8 +58,9 @@ function Attachment({ block }: { block: any }) {
   return (
     <div className="mt-5 min-w-0 rounded-xl border bg-background p-4">
       <p className="mb-3 text-sm font-medium">{BLOCK_TITLE[block.kind]}</p>
+      {typeof queryName === "string" && queryName && <p className="mb-3 text-sm font-medium">{queryName}</p>}
       {block.data?.query_smiles && (
-        <p className="mb-3 font-mono text-sm wrap-anywhere text-muted-foreground">{block.data.query_smiles}</p>
+        <div className="mb-3"><Smiles value={block.data.query_smiles} /></div>
       )}
       {body}
     </div>

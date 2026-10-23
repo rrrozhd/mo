@@ -1,5 +1,7 @@
 """Publication context is retrieved only for retained assay document references."""
 
+import json
+
 import pytest
 
 from src.workbench.session import SessionError
@@ -79,3 +81,53 @@ def test_agent_enriches_snapshot_and_attaches_cited_source_documents(monkeypatch
     assert outcome["attachments"][0]["kind"] == "papers"
     assert outcome["attachments"][0]["data"]["snapshot_id"] == sid
     assert outcome["result_refs"] == [h.events()[0]["result_id"]]
+
+
+def test_agent_waits_for_lookup_snapshot_before_requesting_its_documents(monkeypatch):
+    def follow_documents(request, body):
+        assert "parallel_tool_calls" not in body
+        assert "Never batch a tool with another call that depends on its result." in body["messages"][0]["content"]
+        evidence_message = body["messages"][-1]
+        assert evidence_message["role"] == "tool"
+        evidence = json.loads(evidence_message["content"])[0]
+        assert evidence["snapshot_id"] == h.state()["snapshots"][0]["snapshot_id"]
+        assert evidence["candidate_id"] == "b"
+        return completion(tools=[tool("enrich_papers", {
+            "snapshot_id": evidence["snapshot_id"], "max_results": 1})])
+
+    def answer(request, body):
+        assert "parallel_tool_calls" not in body
+        document_message = body["messages"][-1]
+        assert document_message["role"] == "tool"
+        document = json.loads(document_message["content"])
+        assert document["result"]["data"]["papers"][0]["title"] == "Retained source"
+        evidence = h.state()["snapshots"][0]
+        return completion(final(citations=[
+            {"kind": "snapshot", "reference_id": evidence["snapshot_id"], "candidate_ids": ["b"]},
+            document["citation"]]))
+
+    h = Harness([completion(intent()),
+        completion(tools=[tool("lookup_evidence", {"ids": ["b"], "refresh": False})]),
+        follow_documents, answer])
+    lookup = h.source.lookup
+    document_calls = []
+
+    def evidence_with_document(smiles, limit=10):
+        result = lookup(smiles, limit)
+        result["records"][0]["document_id"] = "CHEMBL1148425"
+        return result
+
+    def documents(ids, **kwargs):
+        document_calls.append(ids)
+        return papers()
+
+    monkeypatch.setattr(h.source, "lookup", evidence_with_document)
+    monkeypatch.setattr(h.source, "documents", documents)
+    before = h.state()
+    outcome = h.run()
+    assert outcome["status"] == "complete"
+    assert document_calls == [["CHEMBL1148425"]]
+    assert [block["kind"] for block in outcome["attachments"]] == ["evidence", "papers"]
+    assert len(h.requests) == len(h.ledger.settlements) == 4
+    for key in ("dataset", "constraints", "selection", "revision"):
+        assert h.state()[key] == before[key]

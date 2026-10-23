@@ -172,6 +172,7 @@ def test_real_sdk_transport_success_has_bounded_calls_and_accounted_usage():
     assert all(request["provider"]["only"] == ["openai"]
                and set(request["provider"]["ignore"]) == {"openai/flex", "openai/fast"} for request in h.requests)
     assert all(request["response_format"]["json_schema"]["strict"] is True for request in h.requests)
+    assert all("parallel_tool_calls" not in request for request in h.requests)
     assert all(timeout and all(0 < value <= 30 for value in timeout.values()) for timeout in h.timeouts)
     assert all(row[3]["cost"] == .00001 for row in h.ledger.settlements)
     assert SECRET not in json.dumps(h.state())
@@ -734,6 +735,32 @@ def test_chemistry_results_share_paid_loop_and_preserve_both_molecules(monkeypat
     assert [block["data"]["query_smiles"] for block in outcome["attachments"]] == ["CCO", "CCN"]
     assert [event["result"]["candidate_ids"] for event in h.events()] == [["a"], ["b"]]
     assert len(h.requests) == len(h.ledger.reservations) == len(h.ledger.settlements) == 3
+
+
+def test_name_first_instruction_reaches_provider_without_rewriting_chemistry(monkeypatch):
+    seen = []
+
+    def predict(smiles):
+        seen.append(smiles)
+        return {"query_smiles": smiles, "enzymes": {}}
+
+    monkeypatch.setattr(cyp_tools, "predict_cyp", predict)
+    message = "Profile ethanol using the uploaded structure. Use its name in your answer."
+    h = Harness([completion(intent(message)),
+                 completion(tools=[tool("predict_cyp", {"smiles": "CCO"})]),
+                 completion(final(explanation="Ethanol's profile is attached."))],
+                candidates=[{"id": "ethanol", "smiles": "CCO"},
+                            {"id": "ethylamine", "smiles": "CCN"}])
+    outcome = h.run(message)
+    instruction = h.requests[1]["messages"][0]
+    assert instruction["role"] == "system"
+    assert "Never print raw SMILES, InChI or other structure encodings" in instruction["content"]
+    assert "unless the current user explicitly asks to see the encoding" in instruction["content"]
+    assert "never use a structure string as a compound name" in instruction["content"]
+    assert "In explanations, wrap SMILES in inline code" not in instruction["content"]
+    assert seen == ["CCO"]
+    assert outcome["attachments"][0]["data"]["query_smiles"] == "CCO"
+    assert h.state()["dataset"]["rows"][0] == {"id": "ethanol", "smiles": "CCO"}
 
 
 def test_structure_evidence_cites_real_snapshot_without_inventing_candidate_id():

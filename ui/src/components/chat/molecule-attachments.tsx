@@ -159,7 +159,7 @@ export function AnalogList({ data, groups = [data] }: { data: any; groups?: any[
           <figure key={analog.smiles} className="min-w-0 overflow-hidden rounded-lg border">
             <Depiction svg={analog.svg} className="rounded-none border-b" />
             <figcaption className="space-y-1.5 p-2.5">
-              <p className="text-sm leading-snug font-medium wrap-anywhere" title={analog.name ?? analog.smiles}>
+              <p className="text-sm leading-snug font-medium wrap-anywhere" title={analog.name || undefined}>
                 {analog.name
                   ? analog.name.length > 90 ? `${analog.name.slice(0, 90)}…` : analog.name
                   : <span className="text-muted-foreground">Training analog {index + 1}</span>}
@@ -224,9 +224,8 @@ export function ExternalAnalogList({ data }: { data: any }) {
             <div className="space-y-2 p-3">
               <p className="font-medium wrap-anywhere">
                 {/^CHEMBL\d+$/.test(analog.compound_id)
-                  ? <a href={`https://www.ebi.ac.uk/chembl/compound_report_card/${analog.compound_id}/`} target="_blank" rel="noreferrer" className="underline underline-offset-2">{analog.compound_id}</a>
-                  : analog.compound_id}
-                {analog.name && ` · ${analog.name}`}
+                  ? <a href={`https://www.ebi.ac.uk/chembl/compound_report_card/${analog.compound_id}/`} target="_blank" rel="noreferrer" className="underline underline-offset-2">{analog.name || analog.compound_id}</a>
+                  : analog.name || analog.compound_id}
               </p>
               <div className="flex flex-wrap gap-1.5">
                 <Badge variant="outline" className="h-auto max-w-full whitespace-normal">ChEMBL similarity {analog.chembl_similarity_percent.toFixed(1)}%</Badge>
@@ -307,12 +306,13 @@ export function SourceDocuments({ data }: { data: any }) {
 }
 
 /** SMILES is the machine's name for the molecule; keep it available, not in the way. */
-function Smiles({ value }: { value: string }) {
+export function Smiles({ value }: { value: string }) {
   const [shown, setShown] = useState(false)
   return (
     <div>
       <button
         type="button"
+        aria-expanded={shown}
         onClick={() => setShown(open => !open)}
         className="text-sm text-muted-foreground underline underline-offset-2"
       >
