@@ -1,8 +1,16 @@
-# Mo
+<p align="center">
+  <img src="assets/mo-logo.svg" alt="Mo benzene-ring logo" width="96" height="96">
+</p>
 
-A molecular screening and evidence workbench, starting with CYP inhibition.
+<h1 align="center">Mo</h1>
 
-[Watch the 2:30 demo on YouTube](https://youtu.be/WdQMBiXYQ-8)
+<p align="center">
+  A molecular screening and evidence workbench, starting with CYP inhibition.
+</p>
+
+<p align="center">
+  <a href="https://youtu.be/WdQMBiXYQ-8">Watch the 2:30 demo on YouTube</a>
+</p>
 
 ## Inside the workbench
 
